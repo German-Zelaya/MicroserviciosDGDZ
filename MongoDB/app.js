@@ -29,9 +29,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/usuarios', {
     console.error('Error al conectar a MongoDB:', err);
 });
 
-// Rutas CRUD
-
-// READ - Mostrar todos los usuarios (Lista)
+// Rutas
 app.get('/', async (req, res) => {
     try {
         const users = await User.find();
@@ -42,12 +40,12 @@ app.get('/', async (req, res) => {
     }
 });
 
-// CREATE - Mostrar formulario para crear usuario
+// CREATE
 app.get('/users/new', (req, res) => {
     res.render('create');
 });
 
-// CREATE - Procesar creación de usuario
+// CREATE
 app.post('/users', async (req, res) => {
     try {
         const { correo, password, nombre, rol } = req.body;
@@ -63,7 +61,7 @@ app.post('/users', async (req, res) => {
     }
 });
 
-// READ - Mostrar un usuario específico
+// READ
 app.get('/users/:id', async (req, res) => {
     try {
         const user = await User.findById(req.params.id);
@@ -77,7 +75,7 @@ app.get('/users/:id', async (req, res) => {
     }
 });
 
-// UPDATE - Mostrar formulario para editar usuario
+// UPDATE
 app.get('/users/:id/edit', async (req, res) => {
     try {
         const user = await User.findById(req.params.id);
@@ -91,7 +89,7 @@ app.get('/users/:id/edit', async (req, res) => {
     }
 });
 
-// UPDATE - Procesar actualización de usuario
+// UPDATE
 app.put('/users/:id', async (req, res) => {
     try {
         const { correo, password, nombre, rol } = req.body;
@@ -114,7 +112,7 @@ app.put('/users/:id', async (req, res) => {
     }
 });
 
-// DELETE - Eliminar usuario
+// DELETE
 app.delete('/users/:id', async (req, res) => {
     try {
         await User.findByIdAndDelete(req.params.id);
