@@ -1,0 +1,81 @@
+<%- 
+    // Configurar título de la página
+    title = 'Lista de Usuarios'
+%>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="bi bi-people"></i> Lista de Usuarios</h1>
+    <a href="/users/new" class="btn btn-success">
+        <i class="bi bi-person-plus"></i> Nuevo Usuario
+    </a>
+</div>
+
+<% if (users.length > 0) { %>
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Avatar</th>
+                            <th>Nombre</th>
+                            <th>Correo</th>
+                            <th>Rol</th>
+                            <th>Fecha</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% users.forEach(user => { %>
+                            <tr>
+                                <td>
+                                    <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                        <%= user.nombre.charAt(0).toUpperCase() %>
+                                    </div>
+                                </td>
+                                <td><%= user.nombre %></td>
+                                <td><%= user.correo %></td>
+                                <td>
+                                    <span class="badge bg-<%= user.rol === 'admin' ? 'danger' : user.rol === 'moderador' ? 'warning' : 'secondary' %>">
+                                        <%= user.rol %>
+                                    </span>
+                                </td>
+                                <td>
+                                    <% if (user.createdAt) { %>
+                                        <%= user.createdAt.toLocaleDateString('es-ES') %>
+                                    <% } else { %>
+                                        -
+                                    <% } %>
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a href="/users/<%= user._id %>" class="btn btn-outline-info btn-sm" title="Ver">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <a href="/users/<%= user._id %>/edit" class="btn btn-outline-warning btn-sm" title="Editar">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <form method="POST" action="/users/<%= user._id %>?_method=DELETE" style="display: inline;">
+                                            <button type="submit" class="btn btn-outline-danger btn-sm" title="Eliminar" onclick="return confirm('¿Estás seguro de eliminar este usuario?')">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+<% } else { %>
+    <div class="text-center py-5">
+        <i class="bi bi-people" style="font-size: 4rem; color: #6c757d;"></i>
+        <h3 class="mt-3 text-muted">No hay usuarios registrados</h3>
+        <p class="text-muted">Comienza creando tu primer usuario.</p>
+        <a href="/users/new" class="btn btn-success">
+            <i class="bi bi-person-plus"></i> Crear Primer Usuario
+        </a>
+    </div>
+<% } %>
