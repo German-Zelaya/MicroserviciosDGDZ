@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Tareas</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📋 Gestor de Tareas</h1>
+            <div class="stats" id="stats">
+                <span id="total-tasks">0 tareas</span>
+            </div>
+        </header>
+
+        <main>
+            <!-- Formulario para crear/editar tarea -->
+            <section class="task-form-section">
+                <h2 id="form-title">✏️ Nueva Tarea</h2>
+                <form id="task-form" class="task-form">
+                    <input type="hidden" id="task-id" value="">
+                    
+                    <div class="form-group">
+                        <label for="titulo">Título:</label>
+                        <input type="text" id="titulo" name="titulo" required maxlength="100" placeholder="Título de la tarea">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="descripcion">Descripción:</label>
+                        <textarea id="descripcion" name="descripcion" required maxlength="500" rows="4" placeholder="Descripción detallada de la tarea"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="estado">Estado:</label>
+                        <select id="estado" name="estado">
+                            <option value="pendiente">📝 Pendiente</option>
+                            <option value="en progreso">🔄 En Progreso</option>
+                            <option value="completado">✅ Completado</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" id="submit-btn">💾 Crear Tarea</button>
+                        <button type="button" id="cancel-btn" class="cancel" style="display: none;">❌ Cancelar</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Filtros y controles -->
+            <section class="controls">
+                <div class="filters">
+                    <select id="filter-estado">
+                        <option value="todos">Todos los estados</option>
+                        <option value="pendiente">📝 Pendientes</option>
+                        <option value="en progreso">🔄 En Progreso</option>
+                        <option value="completado">✅ Completadas</option>
+                    </select>
+                    
+                    <select id="sort-orden">
+                        <option value="recientes">Más recientes</option>
+                        <option value="antiguos">Más antiguos</option>
+                        <option value="titulo">Por título</option>
+                    </select>
+                    
+                    <button id="refresh-btn" class="refresh">🔄 Actualizar</button>
+                </div>
+            </section>
+
+            <!-- Lista de tareas -->
+            <section class="tasks-section">
+                <h2>📋 Mis Tareas</h2>
+                <div id="loading" class="loading" style="display: none;">⏳ Cargando...</div>
+                <div id="tasks-container" class="tasks-container">
+                    <!-- Las tareas se cargarán aquí dinámicamente -->
+                </div>
+                <div id="no-tasks" class="no-tasks" style="display: none;">
+                    📝 No hay tareas que mostrar. ¡Crea tu primera tarea!
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal de confirmación para eliminar -->
+    <div id="delete-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h3>🗑️ Confirmar Eliminación</h3>
+            <p>¿Estás seguro de que deseas eliminar esta tarea?</p>
+            <div class="modal-actions">
+                <button id="confirm-delete" class="danger">🗑️ Eliminar</button>
+                <button id="cancel-delete" class="cancel">❌ Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

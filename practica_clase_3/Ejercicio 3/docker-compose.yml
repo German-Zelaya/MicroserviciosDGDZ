@@ -1,0 +1,81 @@
+version: '3.8'
+
+services:
+  # Servicio de la aplicación Node.js
+  app:
+    build: .
+    container_name: task-manager-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - MONGODB_URI=mongodb://mongodb:27017/taskmanager
+    depends_on:
+      - mongodb
+    networks:
+      - task-network
+    volumes:
+      - ./logs:/app/logs  # Para logs si se implementan
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/tasks/stats/resumen"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Servicio de MongoDB
+  mongodb:
+    image: mongo:7-jammy
+    container_name: task-manager-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=taskmanager
+    volumes:
+      - mongodb_data:/data/db
+      - ./mongo-init:/docker-entrypoint-initdb.d  # Para scripts de inicialización
+    networks:
+      - task-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Servicio opcional de Mongo Express (interfaz web para MongoDB)
+  mongo-express:
+    image: mongo-express:1.0.0-alpha
+    container_name: task-manager-mongo-express
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+      - ME_CONFIG_MONGODB_PORT=27017
+      - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
+      - ME_CONFIG_BASICAUTH_USERNAME=admin
+      - ME_CONFIG_BASICAUTH_PASSWORD=admin123
+    depends_on:
+      - mongodb
+    networks:
+      - task-network
+    profiles:
+      - tools  # Solo se ejecuta si se especifica el perfil
+
+# Volúmenes para persistencia de datos
+volumes:
+  mongodb_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data/mongodb
+
+# Red personalizada
+networks:
+  task-network:
+    driver: bridge

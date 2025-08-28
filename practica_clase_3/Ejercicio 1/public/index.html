@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora</title>
+</head>
+<body>
+    <div>
+        <h1>Calculadora</h1>
+        <div>
+            <button>Suma</button>
+            <button>Resta</button>
+            <button>Multiplicacion</button>
+            <button>Division</button>
+        </div>
+
+<div>
+    <div>
+        <label for="valorA">Valor A:</label>
+        <input type="number" id="valorA" placeholder="Ingrese el valor A" step="any">
+    </div>
+     <div>
+        <label for="valorB">Valor A:</label>
+        <input type="number" id="valorB" placeholder="Ingrese el valor A" step="any">
+    </div>
+</div>
+<button id="calcularBtn">Calcular</button>
+<div>
+    <div id="resultado">
+        <div>Seleccione una operacion e ingresa los valores</div>
+    </div>
+</div>
+    </div>
+
+    <script>
+        let select = null;
+        const buttons = document.querySelectorAll('button');
+        const resultadoDiv = document.getElementById('resultado');
+        const calcularBtn = document.getElementById('calcularBtn');
+        const valorAInput = document.getElementById('valorA');
+        const valorBInput = document.getElementById('valorB');
+
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                if (button.id !== 'calcularBtn') {
+                    select = button.textContent.toLowerCase();
+                    resultadoDiv.innerHTML = `Operacion seleccionada: ${select}`;
+                }
+            });
+        });
+
+        valorAInput.addEventListener('input', () => {
+            if (select) {
+                resultadoDiv.innerHTML = `Operacion seleccionada: ${select}`;
+            }
+        });
+        valorBInput.addEventListener('input', () => {
+            if (select) {
+                resultadoDiv.innerHTML = `Operacion seleccionada: ${select}`;
+            }
+        });
+
+        calcularBtn.addEventListener('click', () => {
+            const valorA = parseFloat(valorAInput.value);
+            const valorB = parseFloat(valorBInput.value);
+            if (!select) {
+                resultadoDiv.innerHTML = 'Por favor, seleccione una operacion.';
+                return;
+            }
+            if (isNaN(valorA) || isNaN(valorB)) {
+                resultadoDiv.innerHTML = 'Por favor, ingrese valores validos para A y B.';
+                return;
+            }
+
+            fetch('/calcular', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    operation: select,
+                    a: valorA,
+                    b: valorB
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    resultadoDiv.innerHTML = `Error: ${data.error}`;
+                } else {
+                    resultadoDiv.innerHTML = `Resultado: ${data.result}`;
+                }
+            })
+            .catch(error => {
+                resultadoDiv.innerHTML = `Error en la solicitud: ${error.message}`;
+            });
+        });
+
+        function mostrarResultado(){
+            const valorA = parseFloat(valorAInput.value);
+            const valorB = parseFloat(valorBInput.value);
+            if (select && !isNaN(valorA) && !isNaN(valorB)) {
+                calcularBtn.disabled = false;
+            } else {
+                calcularBtn.disabled = true;
+            }
+        }
+
+        document.addEventListener('keypress', (e) =>{
+            if(e.key === 'Enter'){
+                calcularBtn.click();
+            }
+        });
+
+    </script>
+</body>
+</html>
