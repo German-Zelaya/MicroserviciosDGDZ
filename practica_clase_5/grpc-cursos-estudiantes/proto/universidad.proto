@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package universidad;
+
+// Mensaje que representa un estudiante
+message Estudiante {
+  string ci = 1;
+  string nombres = 2;
+  string apellidos = 3;
+  string carrera = 4;
+}
+
+// Mensaje que representa un curso
+message Curso {
+  string codigo = 1;
+  string nombre = 2;
+  string docente = 3;
+}
+
+// Respuesta con un estudiante
+message EstudianteResponse {
+  Estudiante estudiante = 1;
+}
+
+// Respuesta con un curso
+message CursoResponse {
+  Curso curso = 1;
+}
+
+// Solicitud para inscribir un estudiante en un curso
+message InscripcionRequest {
+  string ci = 1;
+  string codigo = 2;
+}
+
+// Respuesta de inscripción
+message InscripcionResponse {
+  string mensaje = 1;
+  Estudiante estudiante = 2;
+  Curso curso = 3;
+}
+
+// Solicitud para obtener información por CI
+message EstudianteRequest {
+  string ci = 1;
+}
+
+// Solicitud para obtener información por código de curso
+message CursoRequest {
+  string codigo = 1;
+}
+
+// Lista de cursos
+message CursosList {
+  repeated Curso cursos = 1;
+}
+
+// Lista de estudiantes
+message EstudiantesList {
+  repeated Estudiante estudiantes = 1;
+}
+
+// Servicio de gestión universitaria
+service UniversidadService {
+  rpc AgregarEstudiante (Estudiante) returns (EstudianteResponse);
+  rpc AgregarCurso (Curso) returns (CursoResponse);
+  rpc InscribirEstudiante (InscripcionRequest) returns (InscripcionResponse);
+  rpc ListarCursosDeEstudiante (EstudianteRequest) returns (CursosList);
+  rpc ListarEstudiantesDeCurso (CursoRequest) returns (EstudiantesList);
+}

@@ -1,0 +1,22 @@
+{
+  "name": "grpc-cursos-estudiantes",
+  "version": "1.0.0",
+  "description": "Sistema de gestión universitaria con gRPC",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "server": "node server.js",
+    "client": "node client.js"
+  },
+  "keywords": [
+    "grpc",
+    "nodejs",
+    "universidad"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@grpc/grpc-js": "^1.14.0",
+    "@grpc/proto-loader": "^0.7.15"
+  }
+}
