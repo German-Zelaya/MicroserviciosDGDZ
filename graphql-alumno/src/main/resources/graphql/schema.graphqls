@@ -1,0 +1,42 @@
+# Esquema GraphQL para Alumno
+
+# Tipo Alumno
+type Alumno {
+    id: ID!
+    nombre: String!
+    apellido: String!
+    edad: Int
+}
+
+# Queries disponibles
+type Query {
+    # Obtener todos los alumnos
+    alumnos: [Alumno!]!
+    
+    # Obtener alumno por ID
+    alumno(id: ID!): Alumno
+    
+    # Buscar alumnos por nombre (búsqueda parcial, no case sensitive)
+    alumnosPorNombre(nombre: String!): [Alumno!]!
+    
+    # Buscar alumnos por apellido (búsqueda parcial, no case sensitive)
+    alumnosPorApellido(apellido: String!): [Alumno!]!
+    
+    # Buscar alumnos con edad mayor a la especificada
+    alumnosPorEdadMayorA(edad: Int!): [Alumno!]!
+    
+    # Buscar alumnos en un rango de edad
+    alumnosPorRangoEdad(edadMin: Int!, edadMax: Int!): [Alumno!]!
+}
+
+# Mutations disponibles
+type Mutation {
+    # Crear un nuevo alumno
+    crearAlumno(nombre: String!, apellido: String!, edad: Int): Alumno!
+    
+    # Actualizar un alumno existente (todos los campos son opcionales excepto id)
+    actualizarAlumno(id: ID!, nombre: String, apellido: String, edad: Int): Alumno
+    
+    # Eliminar un alumno por ID
+    eliminarAlumno(id: ID!): Boolean!
+}

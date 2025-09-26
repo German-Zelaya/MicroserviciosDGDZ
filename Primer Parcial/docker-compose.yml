@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: trabajadores_db
+
+  api:
+    build: .
+    container_name: trabajadores-api
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongodb
+    environment:
+      MONGODB_URI: mongodb://mongodb:27017/trabajadores_db
+
+volumes:
+  mongodb_data:

@@ -1,0 +1,6 @@
+com\example\graphqlalumno\GraphqlAlumnoApplication.class
+com\example\graphqlalumno\controller\AlumnoGraphQLController.class
+com\example\graphqlalumno\config\DataLoader.class
+com\example\graphqlalumno\repository\AlumnoRepository.class
+com\example\graphqlalumno\entity\Alumno.class
+com\example\graphqlalumno\service\AlumnoService.class

@@ -8,14 +8,20 @@
     "dev": "nodemon server.js"
   },
   "dependencies": {
-    "express": "^4.18.2",
-    "mongoose": "^8.0.0",
-    "cors": "^2.8.5"
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "mongodb": "^6.20.0",
+    "mongoose": "^8.0.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"
   },
-  "keywords": ["nodejs", "express", "mongodb", "tasks"],
+  "keywords": [
+    "nodejs",
+    "express",
+    "mongodb",
+    "tasks"
+  ],
   "author": "Tu nombre",
   "license": "MIT"
 }

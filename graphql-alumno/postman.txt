@@ -1,0 +1,22 @@
+-- Consulta --
+query {
+  alumnos {
+    id
+    nombre
+    apellido
+    edad
+  }
+}
+
+-- Mutación --
+mutation {
+  crearAlumno(nombre: "Ana", apellido: "García", edad: 22) {
+    id
+    nombre
+    apellido
+    edad
+  }
+}
+
+mvn spring-boot:run (Ejecutar)
+jdbc:h2:mem:testdb (Gestionar base)
