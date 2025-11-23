@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  user-service:
+    build: .
+    container_name: user-service-grpc
+    ports:
+      - "8081:8081"
+      - "9090:9090"
+    networks:
+      - user-network
+
+networks:
+  user-network:
+    driver: bridge

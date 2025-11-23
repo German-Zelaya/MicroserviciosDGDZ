@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  eventos:
+    build: .
+    container_name: microservicio-eventos
+    ports:
+      - "5002:5002"
+    environment:
+      - SECRET_KEY=12345
+      - PORT=5002
+      - DATABASE=/app/data/eventos.db
+    volumes:
+      - eventos-data:/app/data
+    restart: unless-stopped
+
+volumes:
+  eventos-data:
+    driver: local

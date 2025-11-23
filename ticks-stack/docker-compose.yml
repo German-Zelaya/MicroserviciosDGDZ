@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  influxdb:
+    image: influxdb:1.8
+    container_name: influxdb
+    ports:
+      - "8086:8086"
+    environment:
+      - INFLUXDB_DB=telegraf
+      - INFLUXDB_ADMIN_USER=admin
+      - INFLUXDB_ADMIN_PASSWORD=admin123
+      - INFLUXDB_HTTP_AUTH_ENABLED=false
+    volumes:
+      - influxdb-data:/var/lib/influxdb
+    networks:
+      - ticks-network
+
+  telegraf:
+    image: telegraf:1.25
+    container_name: telegraf
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    depends_on:
+      - influxdb
+    networks:
+      - ticks-network
+
+  chronograf:
+    image: chronograf:1.9
+    container_name: chronograf
+    ports:
+      - "8888:8888"
+    environment:
+      - INFLUXDB_URL=http://influxdb:8086
+    depends_on:
+      - influxdb
+    networks:
+      - ticks-network
+
+  kapacitor:
+    image: kapacitor:1.6
+    container_name: kapacitor
+    ports:
+      - "9092:9092"
+    environment:
+      - KAPACITOR_INFLUXDB_0_URLS_0=http://influxdb:8086
+    volumes:
+      - ./kapacitor/kapacitor.conf:/etc/kapacitor/kapacitor.conf:ro
+    depends_on:
+      - influxdb
+    networks:
+      - ticks-network
+
+  microservicio:
+    build: ./microservicio
+    container_name: microservicio
+    ports:
+      - "4000:4000"
+    environment:
+      - TELEGRAF_URL=http://telegraf:8080
+    networks:
+      - ticks-network
+
+networks:
+  ticks-network:
+    driver: bridge
+
+volumes:
+  influxdb-data:

@@ -1,0 +1,30 @@
+type Order {
+    id: ID!
+    customerName: String!
+    productName: String!
+    quantity: Int!
+    totalPrice: Float!
+    status: String!
+    createdAt: String!
+}
+
+input OrderInput {
+    customerName: String!
+    productName: String!
+    quantity: Int!
+    totalPrice: Float!
+    status: String
+}
+
+type Query {
+    orders: [Order]
+    orderById(id: ID!): Order
+    ordersByStatus(status: String!): [Order]
+    ordersByCustomer(customerName: String!): [Order]
+}
+
+type Mutation {
+    createOrder(input: OrderInput!): Order
+    updateOrder(id: ID!, input: OrderInput!): Order
+    deleteOrder(id: ID!): Boolean
+}
